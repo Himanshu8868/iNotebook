@@ -2,82 +2,29 @@ import React, { useContext, useState } from 'react';
 import noteContext from "../context/notes/noteContext";
 
 const AddNote = () => {
-    // Using context to access the addNote function
-    const context = useContext(noteContext);
-    const { addNote } = context;
-
-    // State to manage the input fields for title, description, and tag
-    const [note, setNote] = useState({ title: "", description: "", tag: "" });
+    const { addNote } = useContext(noteContext); // Access addNote from context
+    const [note, setNote] = useState({ title: "", description: "", tag: "" }); // State for inputs
 
     const handleClick = (e) => {
-        e.preventDefault(); // Prevent form reload
-
-        // Validate input fields
-        if (!note.title || !note.description || !note.tag) {
-            console.error("All fields are required.");
-            return;
-        }
-
-        // Call addNote with input values
+        e.preventDefault();
+        if (!note.title || !note.description || !note.tag) return alert("All fields are required!");
         addNote(note.title, note.description, note.tag);
-
-        // Reset the form fields after submission
-        setNote({ title: "", description: "", tag: "" });
+        setNote({ title: "", description: "", tag: "" }); // Reset inputs
     };
 
-    // Function to handle input field changes and update the note state
-    const onchange = (e) => {
-        setNote({ ...note, [e.target.name]: e.target.value }); // Dynamically updates the corresponding field in state
-    };
+    const onchange = (e) => setNote({ ...note, [e.target.name]: e.target.value }); // Update state
 
     return (
-        <div>
-            <div className="container my-3">
-                <h2>Add Your Notes</h2>
-                <form className="my-3">
-                    <div className="mb-3">
-                        {/* Input field for the title */}
-                        <label htmlFor="title" className="form-label">Title</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="title"
-                            name="title"
-                            value={note.title} // Controlled input
-                            onChange={onchange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        {/* Input field for the description */}
-                        <label htmlFor="description" className="form-label">Description</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="description"
-                            name="description"
-                            value={note.description} // Controlled input
-                            onChange={onchange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        {/* Input field for the tag */}
-                        <label htmlFor="tag" className="form-label">Tag</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="tag"
-                            name="tag"
-                            value={note.tag} // Controlled input
-                            onChange={onchange}
-                        />
-                    </div>
-                    {/* Submit button to add the note */}
-                    <button type="submit" className="btn btn-primary" onClick={handleClick}>
-                        Add Note
-                    </button>
-                </form>
-            </div>
+        <div className="container my-3">
+            <h2>Add Note</h2>
+            <form>
+                <input type="text" placeholder="Title" name="title" value={note.title} onChange={onchange} className="form-control my-2" />
+                <input type="text" placeholder="Description" name="description" value={note.description} onChange={onchange} className="form-control my-2" />
+                <input type="text" placeholder="Tag" name="tag" value={note.tag} onChange={onchange} className="form-control my-2" />
+                <button className="btn btn-primary" onClick={handleClick}>Add Note</button>
+            </form>
         </div>
-    )
-}
-  export default AddNote
+    );
+};
+
+export default AddNote;

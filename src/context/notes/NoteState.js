@@ -35,7 +35,7 @@ const NoteState = (props) => {
     });
 
     const json = await response.json();
-    console.log("Response:", json); // Log server response for debugging
+    // console.log("Response:", json); // Log server response for debugging
     if (response.ok) {
         setNotes(notes.concat(json));
     } else {
@@ -91,7 +91,7 @@ const json = response.json();
   }
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes  }}>
       {props.children}
     </NoteContext.Provider>
   )

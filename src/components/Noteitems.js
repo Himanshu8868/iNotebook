@@ -4,10 +4,15 @@ function Noteitems(props) {
    // Using context to access the addNote function
    const context = useContext(noteContext);
    const { deleteNote} = context;
-   const {editNote} = context;
-   const {note} = props ;
+   
+   const {note , updateNote} = props ;
 
-
+   const handleDelete = () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this note?");
+    if (confirmDelete) {
+        deleteNote(note._id); // Call deleteNote function if confirmed
+    }
+};
     return (
         <div className="col-md-4">
             <div className="card my-3">
@@ -22,8 +27,9 @@ function Noteitems(props) {
                     <span className="badge bg-primary">{note.tag}</span>
                     
                     {/* Icons for delete and edit actions */}
-                    <i className="fa-solid fa-trash mx-2" onClick={()=>{deleteNote(note._id)}}></i>
-                    <i className="fa-regular fa-pen-to-square mx-2" onClick={()=>{editNote(note._id)}}></i>
+                    <i className="fa-solid fa-trash mx-2" onClick={()=>{handleDelete(note._id)}}></i>
+                    <i className="fa-regular fa-pen-to-square mx-2" onClick={()=>{updateNote(note)}}></i>
+                 
                 </div>
             </div>
         </div>  
