@@ -10,6 +10,7 @@ function Notes() {
  
   useEffect(() => {
     getNotes();
+     // eslint-disable-next-line 
   }, []); // Fetch notes on component load  //on backend database
    
   const updateNote = (note) => {
@@ -56,6 +57,9 @@ function Notes() {
       {/*End of Update Form */}
       <div className="row my-3">
         <h2>Your Notes</h2>
+        <div className="container">
+        {notes.length===0 && 'No Notes to display'}
+        </div>
         {notes.map((note) => <Noteitems key={note._id} updateNote={updateNote} note={note} />)} {/* List of notes */}
       </div>
     </div>
