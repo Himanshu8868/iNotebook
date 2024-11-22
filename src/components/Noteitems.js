@@ -10,7 +10,8 @@ function Noteitems(props) {
    const handleDelete = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this note?");
     if (confirmDelete) {
-        deleteNote(note._id); // Call deleteNote function if confirmed
+        deleteNote(note._id); // Call deleteNote function if confirmed'
+        props.showAlert("Note deleted Successfully" , "success");
     }
 };
     return (
@@ -27,7 +28,7 @@ function Noteitems(props) {
                     <span className="badge bg-primary">{note.tag}</span>
                     
                     {/* Icons for delete and edit actions */}
-                    <i className="fa-solid fa-trash mx-2" onClick={()=>{handleDelete(note._id)}}></i>
+                    <i className="fa-solid fa-trash mx-2" onClick={()=>{handleDelete(note._id) ; props.showAlert("deleted successfully " , "success")}}></i>
                     <i className="fa-regular fa-pen-to-square mx-2" onClick={()=>{updateNote(note)}}></i>
                  
                 </div>

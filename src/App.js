@@ -11,21 +11,27 @@ import {
 } from "react-router-dom";
 import Login from './components/Login';
 import Singup from './components/Singup';
+import { useState } from 'react';
 
 function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert = (message, type) => {
+    setAlert({ msg: message, type: type });
+    setTimeout(() => setAlert(null), 2000);
+  };
   return (
     <>
     <NoteState>
       <Router>
         <NavBar />    {/*NavBar Items */}
-        <Alert message="Hello from alert"/>     {/*Export Alert */}
+        <Alert alert={alert} />   {/*Export Alert */}
    
         <div className="container">
         <Routes>
-          <Route exact path="/home" element={<Home />} />
-          <Route exact path="/about" element={<About />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<Singup />} />
+          <Route exact path="/"  element={<Home  showAlert={showAlert}/>} />
+          <Route exact path="/about" element={<About showAlert={showAlert} />} />
+          <Route exact path="/login" element={<Login showAlert={showAlert} />} />
+          <Route exact path="/signup" element={<Singup showAlert={showAlert} />} />
         </Routes>
         </div>
       </Router>

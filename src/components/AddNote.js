@@ -1,15 +1,18 @@
 import React, { useContext, useState } from 'react';
 import noteContext from "../context/notes/noteContext";
 
-const AddNote = () => {
+const AddNote = (props) => {
     const { addNote } = useContext(noteContext); // Access addNote from context
     const [note, setNote] = useState({ title: "", description: "", tag: "" }); // State for inputs
 
     const handleClick = (e) => {
         e.preventDefault();
-        if (!note.title || !note.description || !note.tag) return alert("All fields are required!");
+        if (!note.title || !note.description || !note.tag){
+        props.showAlert("All fields is Required" , "warning")
+        }
         addNote(note.title, note.description, note.tag);
         setNote({ title: "", description: "", tag: "" }); // Reset inputs
+       props.showAlert("Note added Sucuessfully" , "success")
     };
 
     const onchange = (e) => setNote({ ...note, [e.target.name]: e.target.value }); // Update state

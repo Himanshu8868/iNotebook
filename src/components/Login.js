@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use `useNavigate` instead of `useHistory`
+import { useNavigate } from 'react-router-dom'; // Use `useNavigate` 
 
-const Login = () => {
-    const [credentials, setCredentials] = useState({ email: "", password: "" });
+const Login = (props) => {
+    const [credentials, setCredentials] = useState({ name:"" , email: "", password: "" , cpassword:""});
     let navigate = useNavigate(); // Use `useNavigate` to handle navigation
 
     const onChange = (e) => {
@@ -28,20 +28,22 @@ const Login = () => {
             if (data.success) { // Check if the backend response has success = true
                 // Save the auth token and redirect
                 localStorage.setItem("token", data.authtoken);
-                navigate("/home"); // Use `navigate` to redirect
+                navigate("/"); // Use `navigate` to redirect
+                props.showAlert("Successfully Login" , "success")
             } else {
-                alert("Please login with correct details.");
+                props.showAlert("Please login with correct details " , "danger")
             }
         } catch (error) {
             console.error("Error during login:", error);
-            alert("An error occurred while logging in. Please try again later.");
+            props.showAlert("An error occurred while logging in. Please try again later." , "danger")
         }
     };
 
     return (
         <div>
+              <h1>Enter a Email and password </h1>
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+                <div className="mb-3 my-2">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" value={credentials.email} name="email" id="email" aria-describedby="emailHelp" onChange={onChange} />
                     <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
@@ -51,7 +53,7 @@ const Login = () => {
                     <input type="password" className="form-control" value={credentials.password} name="password" onChange={onChange} id="password" />
                 </div>
 
-                <button type="submit" className="btn btn-primary" >Submit</button>  {/*Use 'onsubmit on form */}
+                <button type="submit" className="btn btn-primary" >Login</button>  {/*Use 'onsubmit on form */}
             </form>
         </div>
     )

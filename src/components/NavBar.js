@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = () => {
     let location = useLocation();
+    let navigate = useNavigate(); // Use `useNavigate` to handle navigation
+
+    const handleout = () => {
+        localStorage.removeItem('token'); // Correct the typo here
+        navigate("/login"); // Redirect to login after removing the token
+    };
+
+    const isAuthenticated = localStorage.getItem('token'); // Simplify token check
+
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,16 +23,20 @@ const NavBar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname === "/home" ? "active" : ""}`} aria-current="page" to="/home">Home</Link>
+                                <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
                             </li>
                         </ul>
-                        <form className="d-flex">
-                        <Link className="btn btn-primary mx-1" to="/login"  role="button">Login</Link>
-                        <Link className="btn btn-primary mx-1" to="signup" role="button">SignUp</Link>
-                        </form>
+                        {!isAuthenticated ? (
+                            <form className="d-flex">
+                                <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+                                <Link className="btn btn-primary mx-1" to="/signup" role="button">SignUp</Link>
+                            </form>
+                        ) : (
+                            <button onClick={handleout} className='btn btn-primary'>Logout</button>
+                        )}
                     </div>
                 </div>
             </nav>

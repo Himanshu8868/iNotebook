@@ -2,33 +2,44 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from "../context/notes/noteContext";
 import Noteitems from './Noteitems';
 import AddNote from './AddNote';
-
-function Notes() {
+import {
+  useNavigate
+} from 'react-router-dom'; // Use `useNavigate` 
+function Notes(props) {
+  let Navigate = useNavigate();
   const { notes, getNotes, editNote } = useContext(noteContext); // Access notes and getNotes from context
   const [currentNote, setCurrentNote] = useState({ id: "", title: "", description: "", tag: "" });
   const ref = useRef(null), refClose = useRef(null);
- 
+
   useEffect(() => {
-    getNotes();
-     // eslint-disable-next-line 
+    if (localStorage.getItem('token')) {     //soft coded auth-token from noteState"//
+      getNotes();
+    }
+    else {
+      Navigate('/login');
+    }
+
+    // eslint-disable-next-line 
   }, []); // Fetch notes on component load  //on backend database
-   
+
   const updateNote = (note) => {
     setCurrentNote({ id: note._id, title: note.title, description: note.description, tag: note.tag }); // Set current note for editing
     ref.current.click(); // Trigger modal to show
+
   };
 
   const handleUpdate = () => {
     console.log("Updated Note:", currentNote); // Log updated note (replace with API call to update note)
     refClose.current.click(); // Close modal after updating
     editNote(currentNote.id, currentNote.title, currentNote.description, currentNote.tag) //add this on database (update Notes )
+    props.showAlert(" Note Updated Successfully", "success")
   };
 
   const onChange = (e) => setCurrentNote({ ...currentNote, [e.target.name]: e.target.value }); // Update fields dynamically
 
   return (
     <div>
-      <AddNote /> {/* Add new notes */}
+      <AddNote showAlert={props.showAlert} /> {/* Add new notes */}
 
       {/* UpdateNote form */}
 
@@ -58,9 +69,9 @@ function Notes() {
       <div className="row my-3">
         <h2>Your Notes</h2>
         <div className="container">
-        {notes.length===0 && 'No Notes to display'}
+          {notes.length === 0 && 'No Notes to display'}
         </div>
-        {notes.map((note) => <Noteitems key={note._id} updateNote={updateNote} note={note} />)} {/* List of notes */}
+        {notes.map((note) => <Noteitems key={note._id} updateNote={updateNote} showAlert={props.showAlert} note={note} />)} {/* List of notes */}
       </div>
     </div>
   );
